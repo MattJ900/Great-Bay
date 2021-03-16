@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
   user: 'root',
 
   // Be sure to update with your own MySQL password!
-  password: '',
+  password: 'yourRootPassword',
   database: 'greatBayDB',
 });
 
@@ -72,23 +72,42 @@ inquirer
             });
 
           })
-          // const createItem = () = > {
 
           
 
       } else if (answer.bidOrPost === "Bid"){
-        inquirer
-          .prompt([
-            {
-              type: "list",
-              message: "How much would you like to bid?",
-              choices:["Car", "Motorcycle", "Skateboard"],
-              name: "item"
-            }  
-          ]).then(answers => {
-
-          })
-
+        connection.query('SELECT * FROM auctions', (err, results) => {
+          if (err) throw err;
+          // once you have the items, prompt the user for which they'd like to bid on
+          inquirer
+            .prompt([
+              {
+                name: 'choice',
+                type: 'rawlist',
+                choices() {
+                  const choiceArray = [];
+                  results.forEach(({ item_name }) => {
+                    choiceArray.push(item_name);
+                  });
+                  return choiceArray;
+                },
+                message: 'What auction would you like to place a bid in?',
+              },
+              {
+                name: 'bid',
+                type: 'input',
+                message: 'How much would you like to bid?',
+              },
+            ])
+            .then((answer) => {
+              // get the information of the chosen item
+              let chosenItem;
+              results.forEach((item) => {
+                if (item.item_name === answer.choice) {
+                  chosenItem = item;
+                }
+              });
+            })
       }
      
     })
