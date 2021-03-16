@@ -11,8 +11,8 @@ const connection = mysql.createConnection({
   user: 'root',
 
   // Be sure to update with your own MySQL password!
-  password: 'yourRootPassword',
-  database: 'marketPlace',
+  password: 'Fakefake323!!',
+  database: 'greatBayDB',
 });
 
 
@@ -29,7 +29,7 @@ inquirer
   ])
   .then((answer) => {
       if (answer.bidOrPost=== "Post") {
-        console.log(bidOrPost);
+        console.log(answer.bidOrPost);
         inquirer
           .prompt([
             {
@@ -62,9 +62,9 @@ inquirer
             connection.query('INSERT INTO marketPlace SET ?',
             {
               item: answer.item,
-              bidamount: answer.bidamount,
+              bidamount: answer.startingBid,
               category: answer.category
-            }, (err) => {
+            }, (err,res) => {
               if (err) throw err;
               // Log all results of the SELECT statement
               console.log(res);
@@ -78,13 +78,16 @@ inquirer
 
       } else if (answer.bidOrPost === "Bid"){
         inquirer
-          .prompt;
-        {
-          type: "list",
-          message; "How much would you like to bid?",
-          choices;["Car", "Motorcycle", "Skateboard"],
-          name; "item";
-        }
+          .prompt([
+            {
+              type: "list",
+              message: "How much would you like to bid?",
+              choices:["Car", "Motorcycle", "Skateboard"],
+              name: "item"
+            }  
+          ]).then(answers => {
+
+          })
 
       }
      
