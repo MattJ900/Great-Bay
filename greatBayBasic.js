@@ -1,6 +1,4 @@
-
-var inquirer = require('inquirer');
-
+const inquirer = require('inquirer');
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
@@ -61,18 +59,22 @@ inquirer
           ])
           .then ((answer ) => {
             // read/ to create/ 
-            connection.query('INSERT INTO marketPlace ?', (err, res) => {
+            connection.query('INSERT INTO marketPlace SET ?',
+            {
+              item: answer.item,
+              bidamount: answer.bidamount,
+              category: answer.category
+            }, (err) => {
               if (err) throw err;
               // Log all results of the SELECT statement
               console.log(res);
-              connection.end();
+              answers();
             });
 
           })
-          const createItem = () = > {
+          // const createItem = () = > {
 
-          };
-        
+          
 
       } else if (answer.bidOrPost === "Bid"){
         inquirer
